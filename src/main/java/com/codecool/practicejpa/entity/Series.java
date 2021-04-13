@@ -20,6 +20,7 @@ public class Series {
     @Transient
     private int numberOfSeasons;
 
+    @Singular
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "series", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Season> seasons;
