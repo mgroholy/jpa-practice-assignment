@@ -26,4 +26,7 @@ public class Series {
 
     @ElementCollection
     private Set<String> actors;
+
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
 }
