@@ -25,6 +25,7 @@ public class Series {
     @OneToMany(mappedBy = "series", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Season> seasons;
 
+    @Singular
     @ElementCollection
     private Set<String> actors;
 
