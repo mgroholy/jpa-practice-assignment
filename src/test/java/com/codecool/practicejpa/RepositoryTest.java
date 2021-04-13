@@ -1,6 +1,9 @@
 package com.codecool.practicejpa;
 
 import com.codecool.practicejpa.entity.Episode;
+import com.codecool.practicejpa.entity.Genre;
+import com.codecool.practicejpa.entity.Season;
+import com.codecool.practicejpa.entity.Series;
 import com.codecool.practicejpa.repository.EpisodeRepository;
 import com.codecool.practicejpa.repository.SeasonRepository;
 import com.codecool.practicejpa.repository.SeriesRepository;
@@ -30,7 +33,7 @@ public class RepositoryTest {
     private SeriesRepository seriesRepository;
 
     @Test
-    public void episodeRepositorySavesThenReturnsSameEpisode(){
+    public void episodeRepositorySave_simpleEpisode_findAllReturnsSameEpisode(){
         Episode episode = Episode.builder()
                 .title("Episode title")
                 .releaseDate(LocalDate.of(2020,1,1))
@@ -38,6 +41,68 @@ public class RepositoryTest {
                 .build();
         episodeRepository.save(episode);
         assertEquals(episode, episodeRepository.findAll().get(0));
+    }
+
+    @Test
+    public void seasonRepositorySave_simpleSeason_findAllReturnsSameSeason(){
+        Season season = Season.builder()
+                .releaseDate(LocalDate.of(2020,1,1))
+                .build();
+        seasonRepository.save(season);
+        assertEquals(season, seasonRepository.findAll().get(0));
+    }
+
+    @Test
+    public void seasonRepositorySave_seasonWithEpisode_savesSeasonAndEpisode(){
+        Episode episode = Episode.builder()
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2020,1,1))
+                .runtime(60)
+                .build();
+        Season season = Season.builder()
+                .episode(episode)
+                .releaseDate(LocalDate.of(2020,1,1))
+                .build();
+
+        seasonRepository.save(season);
+        assertEquals(season, seasonRepository.findAll().get(0));
+        assertEquals(episode, episodeRepository.findAll().get(0));
+
+    }
+
+    @Test
+    public void seriesRepositorySave_simpleSeries_findAllReturnsSeries(){
+        Series series = Series.builder()
+                .genre(Genre.ACTION)
+                .title("Series title")
+                .build();
+        seriesRepository.save(series);
+        assertEquals(series, seriesRepository.findAll().get(0));
+    }
+
+    @Test
+    public void seriesRepositorySave_seriesWithSeasonWithEpisode_savesAll(){
+        Episode episode = Episode.builder()
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2020,1,1))
+                .runtime(60)
+                .build();
+        Season season = Season.builder()
+                .episode(episode)
+                .releaseDate(LocalDate.of(2020,1,1))
+                .build();
+        Series series = Series.builder()
+                .genre(Genre.ACTION)
+                .title("Series title")
+                .season(season)
+                .build();
+        episode.setSeason(season);
+        season.setSeries(series);
+        seriesRepository.save(series);
+        assertEquals(season, seasonRepository.findAll().get(0));
+        assertEquals(episode, episodeRepository.findAll().get(0));
+        assertEquals(series, seriesRepository.findAll().get(0));
+
     }
 
 
