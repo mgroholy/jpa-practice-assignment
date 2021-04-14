@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -33,6 +34,7 @@ public class PracticeJpaApplication {
     }
 
     @Bean
+    @Profile("production")
     public CommandLineRunner init(){
         return args -> {
             Episode episode1 = Episode.builder()
