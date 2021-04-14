@@ -105,5 +105,55 @@ public class RepositoryTest {
 
     }
 
+    @Test
+    public void episodeRepositoryFindEpisodesByDateBetween_episodeBetweenDates_returnsEpisode(){
+        LocalDate from = LocalDate.of(2020,1,1);
+        LocalDate to = LocalDate.of(2020,2,1);
+        Episode episode = Episode.builder()
+                .runtime(30)
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2020,1,15))
+                .build();
+        episodeRepository.save(episode);
+        assertEquals(episode, episodeRepository.findEpisodesByDateBetween(from, to).get(0));
+    }
+
+    @Test
+    public void episodeRepositoryFindEpisodesByDateBetween_episodeNotBetweenDates_returnsEpisode(){
+        LocalDate from = LocalDate.of(2020,1,1);
+        LocalDate to = LocalDate.of(2020,2,1);
+        Episode episode = Episode.builder()
+                .runtime(30)
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2021,1,15))
+                .build();
+        episodeRepository.save(episode);
+        assertEquals(0, episodeRepository.findEpisodesByDateBetween(from,to).size());
+    }
+
+    @Test
+    public void episodeRepositoryFindEpisodesByDateBetween_multipleEpisodeBetweenDates_returnsEpisode(){
+        LocalDate from = LocalDate.of(2020,1,1);
+        LocalDate to = LocalDate.of(2020,2,1);
+        Episode episode1 = Episode.builder()
+                .runtime(30)
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2020,1,15))
+                .build();
+        Episode episode2 = Episode.builder()
+                .runtime(30)
+                .title("Episode title")
+                .releaseDate(LocalDate.of(2020,1,16))
+                .build();
+
+        episodeRepository.save(episode1);
+        episodeRepository.save(episode2);
+        assertEquals(2, episodeRepository.findEpisodesByDateBetween(from, to).size());
+        assertTrue(episodeRepository.findEpisodesByDateBetween(from,to).contains(episode1));
+        assertTrue(episodeRepository.findEpisodesByDateBetween(from,to).contains(episode2));
+
+
+    }
+
 
 }
