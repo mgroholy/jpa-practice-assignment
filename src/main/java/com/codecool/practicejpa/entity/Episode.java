@@ -23,6 +23,7 @@ public class Episode {
     private int runtime;
     private LocalDate releaseDate;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
     private Season season;

@@ -21,6 +21,7 @@ public class Series {
     private int numberOfSeasons;
 
     @Singular
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "series", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Season> seasons;
